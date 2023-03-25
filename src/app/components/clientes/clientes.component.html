@@ -1,0 +1,183 @@
+
+<!-- Pantalla de carga -->
+<div class="page-loader" *ngIf="PageReady">
+	<div class="spinner"></div>
+	<div class="txt">Cargando<br>datos</div>
+</div>
+
+<!-- Title -->
+<header id="main-header" class="py-2 bg-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="fa-solid fa-user"> Control de Clientes</h1> 
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Tarjetas -->
+<section id="tarjetas">
+    <div class="Saldo Info_card">
+        <h2>Saldo Total</h2>
+        <h1><i class="fa-sharp fa-solid fa-coins"></i> {{getSaldoTotal() | currency: 'SOL': 'S/' }}</h1>
+    </div>
+    <div class="Clientes Info_card">
+        <h2>Clientes Registrados</h2>
+        <h1><i class="fas fa-users"></i> {{getClientesSize()}}</h1>
+    </div>
+</section>
+
+<div class="text-center addbtn">
+    <button class="btn btn-lg btn-outline-primary" (click)="open(content)"><i class="fa-solid fa-user"></i> Añadir nuevo cliente </button>
+</div>
+
+<!-- Clientes -->
+<section id="clientes">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 tablecomponent">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Listado de Clientes</h4>
+                    </div>
+
+                    <table class="table table-striped table-responsive">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Saldo</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <ng-template *ngIf="getClientesSize() === 0; then DataLoading else DataReady">
+
+                        </ng-template>
+
+                        <ng-template #DataLoading>
+                        <tbody>
+                            <tr>
+                                <td>{{LoadingMessage}}</td>
+                                <td>{{LoadingMessage}}</td>
+                                <td>{{LoadingMessage}}</td>
+                                <td>{{LoadingMessage}}</td>
+                            </tr>
+                        </tbody>
+                        </ng-template>
+
+                        <ng-template #DataReady>
+                            <tbody >
+                                <tr *ngFor="let cliente of clientes; let i = index">
+                                    <td>{{i + 1}}</td>
+                                    <td>{{cliente.nombre}}</td>
+                                    <td>{{cliente.saldo | currency: 'SOL': 'S/'}}</td>
+                                    <td>
+                                        <a routerLink="/cliente/editar/{{cliente.id}}" class="btn btn-primary">
+                                            <i class="fa-solid fa-pen-to-square"></i> Editar
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </ng-template>
+                        
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+<ng-template #content let-modal>
+	<div class="modal-header bg-primary text-white">
+		<h4 class="modal-title" id="modal-basic-title">Añadir nuevo cliente</h4>
+		<button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<form #clienteForm="ngForm" #f="ngForm">
+			<div class="mb-3">
+				<label for="dateOfBirth">*Nombre</label>
+				<div class="input-group">
+					<input
+						id="nombre"
+						class="form-control"
+						placeholder="Nombre"
+						name="nombre"
+                        #nombre="ngModel"
+                        [(ngModel)]="cliente.nombre"
+                        [ngClass]="{'is-invalid': nombre.errors && nombre.touched}"
+                        required
+                        minlength="2"
+					/>
+                    <div [hidden]="!nombre.errors?.['required']" class="invalid-feedback">
+                        Nombre requerido
+                    </div>
+                    <div [hidden]="!nombre.errors?.['minlength']" class="invalid-feedback">
+                       Debe obtener al menos 2 caracteres
+                    </div>
+				</div>
+                <label for="dateOfBirth">*Apellido</label>
+                <div class="input-group">
+					<input
+						id="apellido"
+						class="form-control"
+						placeholder="Apellido"
+						name="apellido"
+                        #apellido="ngModel"
+                        [(ngModel)]="cliente.apellido"
+                        [ngClass]="{'is-invalid': apellido.errors && apellido.touched}"
+                        required
+                        minlength="2"
+					/>
+                    <div [hidden]="!apellido.errors?.['required']" class="invalid-feedback">
+                        Apellido requerido
+                    </div>
+                    <div [hidden]="!apellido.errors?.['minlength']" class="invalid-feedback">
+                        Debe obtener al menos 2 caracteres
+                    </div>
+				</div>
+                <label for="dateOfBirth">*Correo</label>
+                <div class="input-group">
+					<input
+						id="correo"
+						class="form-control"
+						placeholder="Correo"
+						name="correo"
+                        #email="ngModel"
+                        type="email"
+                        [(ngModel)]="cliente.email"
+                        [ngClass]="{'is-invalid': email.errors && email.touched}"
+                        required
+					/>
+                    <div [hidden]="!email.errors?.['required']" class="invalid-feedback">
+                        Correo requerido
+                    </div>
+				</div>
+                <label for="dateOfBirth">*Saldo</label>
+                <div class="input-group">
+					<input
+						id="saldo"
+						class="form-control"
+						placeholder="Saldo"
+						name="saldo"
+                        type="number"
+                        #saldo="ngModel"
+                        [(ngModel)]="cliente.saldo"
+                        [ngClass]="{'is-invalid': saldo.errors && saldo.touched}"
+                        min="1"
+                        required
+					/>
+                    <div [hidden]="!saldo.errors?.['required']" class="invalid-feedback">
+                        Saldo requerido
+                    </div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="submit" class="btn btn-outline-primary" (click)="AgregarCliente(clienteForm)">Guardar</button>
+	</div>
+</ng-template>
+
+<hr />

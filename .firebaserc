@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "controlclientes-23358": {
+      "hosting": {
+        "ControlDeClientes": [
+          "controlclientes-23358"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "controlclientes-23358"
+  }
+}
