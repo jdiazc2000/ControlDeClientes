@@ -2,9 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Cliente } from 'src/app/models/Cliente';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { NgToastService } from 'ng-angular-popup';
-import { ModalDismissReasons, NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
-
 
 @Component({
   selector: 'app-clientes',
@@ -25,8 +24,7 @@ export class ClientesComponent implements OnInit {
     saldo: 0 
   }
 
-  @ViewChild('clienteForm', {static: true}) eForm: NgForm;
-  @ViewChild('f', {static: true}) eForm2: NgForm;
+  @ViewChild('clienteForm', {static: false}) clientForm: NgForm;
 
   constructor(
     private clientesService: ClienteService,
@@ -70,13 +68,9 @@ export class ClientesComponent implements OnInit {
     }
     return saldoTotal;
   }
-  
-  @ViewChild('closebutton') closebutton: any;
 
   AgregarCliente({value, valid}: {value: Cliente, valid: boolean | null}){
-    if(!valid){
-      console.log(this.eForm)
-      console.log(this.eForm2)
+    if(!valid){   
       return this.toast.error({
         detail: 'Error al agregar el cliente',
         summary: `Llenar el formulario correctamente.`,
@@ -84,8 +78,9 @@ export class ClientesComponent implements OnInit {
     }else{
       //this.clientesService.agregarCliente(value);
       //this.modalService.dismissAll(this.modalService);
-      //NO RESETEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-   
+      console.log("a")
+      this.clientForm.onReset()
+      //https://stackoverflow.com/questions/58160209/resetting-a-form
     }
   }
 

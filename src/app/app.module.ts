@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { provideFirestore,getFirestore, FirestoreModule } from '@angular/fire/firestore';
 import { provideAuth,getAuth, AuthModule } from '@angular/fire/auth';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore/'; 
 
 import { AppComponent } from './app.component';
@@ -49,7 +49,6 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
     AngularFirestoreModule,
     AuthModule,
     ToastrModule,
-    ReactiveFormsModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
