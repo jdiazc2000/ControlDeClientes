@@ -1,35 +1,37 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Cliente } from 'src/app/models/Cliente';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { NgToastService } from 'ng-angular-popup';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NgForm } from '@angular/forms';
+import { FormGroup, NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.component.html',
   styleUrls: ['./clientes.component.scss']
 })
-export class ClientesComponent implements OnInit {
+export class ClientesComponent implements OnInit, AfterViewInit {
   clientes!: Cliente[];
   clienteslength: number = 0;
   LoadingMessage: string = 'Cargando..';
   PageReady:boolean = true
   closeResult = '';
   
+  @ViewChild('clienteForm', {static: false}) clientForm: NgForm;
+  
   cliente: Cliente = {
     nombre: '',
     apellido: '',
-    email: '',
+    correo: '',
     saldo: 0 
   }
-
-  @ViewChild('clienteForm', {static: false}) clientForm: NgForm;
 
   constructor(
     private clientesService: ClienteService,
     private toast: NgToastService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private router: Router
   ){}
 
   ngOnInit() {
@@ -55,6 +57,10 @@ export class ClientesComponent implements OnInit {
     );
   }
 
+  ngAfterViewInit(): void {
+    this.clientForm ? true : false
+  }
+
   getClientesSize(): number {
     return this.clienteslength;
   }
@@ -76,13 +82,18 @@ export class ClientesComponent implements OnInit {
         summary: `Llenar el formulario correctamente.`,
       });
     }else{
-      //this.clientesService.agregarCliente(value);
-      //this.modalService.dismissAll(this.modalService);
-      console.log("a")
-      this.clientForm.onReset()
-      //https://stackoverflow.com/questions/58160209/resetting-a-form
+      this.clientesService.agregarCliente(value);
+      this.modalService.dismissAll(this.modalService);
+
+      setTimeout(() => {
+        this.cliente.nombre = ''
+        this.cliente.apellido = ''
+        this.cliente.correo = ''
+        this.cliente.saldo = 0
+      }, 1000);
     }
   }
+
 
   LoadDataOk() {
     if(this.clientes.length === 1){

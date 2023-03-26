@@ -144,13 +144,13 @@
 						class="form-control"
 						placeholder="Correo"
 						name="correo"
-                        #email="ngModel"
+                        #correo="ngModel"
                         type="email"
-                        [(ngModel)]="cliente.email"
-                        [ngClass]="{'is-invalid': email.errors && email.touched}"
+                        [(ngModel)]="cliente.correo"
+                        [ngClass]="{'is-invalid': correo.errors && correo.touched}"
                         required
 					/>
-                    <div [hidden]="!email.errors?.['required']" class="invalid-feedback">
+                    <div [hidden]="!correo.errors?.['required']" class="invalid-feedback">
                         Correo requerido
                     </div>
 				</div>

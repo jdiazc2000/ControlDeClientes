@@ -12,7 +12,7 @@ export class ClienteService {
   clienteDoc: AngularFirestoreDocument<Cliente>;
 
   clientesObject: Observable<Cliente[]>
-  cliente: Observable<Cliente>
+  cliente: Observable<Cliente>;
 
   constructor(private database: AngularFirestore){
     //Clientes es el nombre de la tabla en Firebase
@@ -38,9 +38,25 @@ export class ClienteService {
     this.clientesCollection.add(cliente)
   }
 
-  getObjetoCLiente(){
-    let a = this.clientesObject;
-    return a
+  getCliente(id: string):Observable<Cliente>{
+    this.clienteDoc = this.database.doc<Cliente>(`Clientes/${id}`);
+    this.cliente = this.clienteDoc.snapshotChanges().pipe(
+        map( accion => {
+            if(accion.payload.exists === false){
+                return null;
+            }
+            else{
+                const datos = accion.payload.data() as Cliente;
+                datos.id = accion.payload.id;
+                return datos as any;
+            }
+        })
+    );
+    return this.cliente;
   }
 
+  modificarCliente(cliente: Cliente){
+    this.clienteDoc = this.database.doc(`Clientes/${cliente.id}`);
+    this.clienteDoc.update(cliente);
+  }
 }

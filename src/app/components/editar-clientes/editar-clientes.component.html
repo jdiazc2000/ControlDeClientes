@@ -1,6 +1,13 @@
 <app-header></app-header>
 
-<header id="main-header" class="py-2 bg-dark text-white">
+
+<!-- Pantalla de carga -->
+<div class="page-loader" *ngIf="PageReady">
+	<div class="spinner"></div>
+	<div class="txt">Cargando<br>datos del cliente</div>
+</div>
+
+<header id="main-header" class="py-2 bg-primary text-white">
     <div class="container">
         <div class="row">
             <div class="col-md-6">
@@ -9,3 +16,96 @@
         </div>
     </div>
 </header>
+
+<section>
+    <form #clienteForm="ngForm">
+        <div class="mb-3 p-5">
+            <label for="dateOfBirth">*Nombre</label>
+            <div class="input-group">
+                <input
+                    id="nombre"
+                    class="form-control"
+                    placeholder="Nombre"
+                    name="nombre"
+                    #nombre="ngModel"
+                    [(ngModel)]="cliente.nombre"
+                    [ngClass]="{'is-invalid': nombre.errors && nombre.touched}"
+                    required
+                    minlength="2"
+                />
+                <div [hidden]="!nombre.errors?.['required']" class="invalid-feedback">
+                    Nombre requerido
+                </div>
+                <div [hidden]="!nombre.errors?.['minlength']" class="invalid-feedback">
+                   Debe obtener al menos 2 caracteres
+                </div>
+            </div>
+            <label for="dateOfBirth">*Apellido</label>
+            <div class="input-group">
+                <input
+                    id="apellido"
+                    class="form-control"
+                    placeholder="Apellido"
+                    name="apellido"
+                    #apellido="ngModel"
+                    [(ngModel)]="cliente.apellido"
+                    [ngClass]="{'is-invalid': apellido.errors && apellido.touched}"
+                    required
+                    minlength="2"
+                />
+                <div [hidden]="!apellido.errors?.['required']" class="invalid-feedback">
+                    Apellido requerido
+                </div>
+                <div [hidden]="!apellido.errors?.['minlength']" class="invalid-feedback">
+                    Debe obtener al menos 2 caracteres
+                </div>
+            </div>
+            <label for="dateOfBirth">*Correo</label>
+            <div class="input-group">
+                <input
+                    id="correo"
+                    class="form-control"
+                    placeholder="Correo"
+                    name="correo"
+                    #correo="ngModel"
+                    type="correo"
+                    [(ngModel)]="cliente.correo"
+                    [ngClass]="{'is-invalid': correo.errors && correo.touched}"
+                    required
+                />
+                <div [hidden]="!correo.errors?.['required']" class="invalid-feedback">
+                    Correo requerido
+                </div>
+            </div>
+            <label for="dateOfBirth">*Saldo</label>
+            <div class="input-group">
+                <input
+                    id="saldo"
+                    class="form-control"
+                    placeholder="Saldo"
+                    name="saldo"
+                    type="number"
+                    #saldo="ngModel"
+                    [(ngModel)]="cliente.saldo"
+                    [ngClass]="{'is-invalid': saldo.errors && saldo.touched}"
+                    min="1"
+                    required
+                />
+                <div [hidden]="!saldo.errors?.['required']" class="invalid-feedback">
+                    Saldo requerido
+                </div>
+            </div>
+        </div>
+    <div id="footerbuttons" class="p-5">
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-outline-primary" (click)="VolverHome()" disabled><i class="fa-solid fa-door-open"></i> Volver al inicio</button>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-outline-success" (click)="EditarCliente(clienteForm)"><i class="fa-solid fa-pencil"></i> Editar cliente</button>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-outline-danger" (click)="EliminarCliente(clienteForm)" disabled><i class="fa-solid fa-trash"></i> Eliminar cliente</button>
+        </div>
+    </div>
+    </form>
+</section>
