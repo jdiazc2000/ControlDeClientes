@@ -11,21 +11,11 @@ import { TableComponent } from './components/table/table.component';
 const routes: Routes = [
   {
     path:'table',
-    component:TableComponent,
-    children:[
-      {
-        path:'clientes',
-        component: ClientesComponent
-      }
-    ]
+    component:TableComponent
   },
   {
     path:'login',
     component:LoginComponent
-  },
-  {
-    path:'registrarse',
-    component:RegistroComponent
   },
   {
     path:'configuracion',
@@ -37,7 +27,7 @@ const routes: Routes = [
   },
   {
     path:'**',
-    component:NoEncontradoComponent
+    component:TableComponent
   },
 ];
 

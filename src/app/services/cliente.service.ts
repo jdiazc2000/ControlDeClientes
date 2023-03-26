@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { deleteDoc, doc, getFirestore } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators'
 import { Cliente } from '../models/Cliente';
@@ -58,5 +59,11 @@ export class ClienteService {
   modificarCliente(cliente: Cliente){
     this.clienteDoc = this.database.doc(`Clientes/${cliente.id}`);
     this.clienteDoc.update(cliente);
+  }
+  
+  deleteCliente(id: string){
+    this.clienteDoc = this.database.doc(`Clientes/${id}`);
+    this.clienteDoc.delete();
+    alert("DELETED")
   }
 }

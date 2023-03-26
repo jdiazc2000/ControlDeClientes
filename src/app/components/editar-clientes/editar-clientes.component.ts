@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
 import { Cliente } from 'src/app/models/Cliente';
@@ -9,7 +9,7 @@ import { ClienteService } from 'src/app/services/cliente.service';
   templateUrl: './editar-clientes.component.html',
   styleUrls: ['./editar-clientes.component.scss']
 })
-export class EditarClientesComponent implements OnInit, OnDestroy{
+export class EditarClientesComponent implements OnInit{
   id: string 
   PageReady:boolean = true
   cliente: Cliente  = {
@@ -27,9 +27,13 @@ export class EditarClientesComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id']
     this.clienteService.getCliente(this.id).subscribe(cliente => {
-      this.cliente = cliente
-      this.PageReady = false
-      this.SendNotification()
+      if(cliente !== null){
+        this.cliente = cliente
+        this.PageReady = false
+      }else{
+        this.router.navigate(["table"])
+      }
+
     })
   }
 
@@ -40,13 +44,8 @@ export class EditarClientesComponent implements OnInit, OnDestroy{
     });
   }
 
-  ngOnDestroy(): void{
-    //DESUSCRIBIRME DEL SERVICIO AL CAMBIAR DE PÁGINA
-    //this.clienteService.unsubscribe()
-  }
-
   VolverHome(){
-
+    this.router.navigate(["table"])
   }
 
   EditarCliente({value, valid}: {value: Cliente, valid: boolean | null}){
@@ -57,15 +56,16 @@ export class EditarClientesComponent implements OnInit, OnDestroy{
       });
     }else{
       value.id = this.id
-
       //Modificar el cliente
       this.clienteService.modificarCliente(value)
-      this.router.navigate(["table/clientes"])
+      this.router.navigate(["table"])
     }
   }
 
-  EliminarCliente({value, valid}: {value: Cliente, valid: boolean | null}){
-
+  EliminarCliente(){
+    let dataId = this.route.snapshot.params['id']
+    this.clienteService.deleteCliente(dataId)
+    this.router.navigate(["table"])
   }
 
 }
