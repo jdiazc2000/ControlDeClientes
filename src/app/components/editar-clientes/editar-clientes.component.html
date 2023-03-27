@@ -104,8 +104,24 @@
             <button type="button" class="btn btn-outline-success" (click)="EditarCliente(clienteForm)"><i class="fa-solid fa-pencil"></i> Editar cliente</button>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-outline-danger" (click)="EliminarCliente()"><i class="fa-solid fa-trash"></i> Eliminar cliente</button>
+            <button type="button" class="btn btn-outline-danger" (click)="open(content)"><i class="fa-solid fa-trash"></i> Eliminar cliente</button>
+            
         </div>
     </div>
     </form>
+
+    <ng-template #content let-modal>
+        <div class="modal-header bg-danger text-white">
+            <h4 class="modal-title" id="modal-basic-title">Confirmación</h4>
+            <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <p>¿Estás seguro de que quieres eliminar permanentemente a {{cliente.nombre}} {{cliente.apellido}}?</p>
+            <p style="color: red; text-transform: uppercase;">(Esta acción no se puede deshacer)</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger" (click)="EliminarCliente(); modal.close()">Eliminar</button>
+            <button type="button" class="btn btn-outline-secondary" (click)="modal.close()">Volver</button>
+        </div>
+    </ng-template>
 </section>

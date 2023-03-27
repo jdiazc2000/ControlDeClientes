@@ -1,38 +1,38 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Cliente } from 'src/app/models/Cliente';
 import { ClienteService } from 'src/app/services/cliente.service';
-import { NgToastService } from 'ng-angular-popup';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup, NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { ToasterService } from 'src/app/services/toaster.service';
+
 
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.component.html',
-  styleUrls: ['./clientes.component.scss']
+  styleUrls: ['./clientes.component.scss'],
 })
-export class ClientesComponent implements OnInit, AfterViewInit {
+export class ClientesComponent implements OnInit {
   clientes!: Cliente[];
   clienteslength: number = 0;
   LoadingMessage: string = 'Cargando..';
-  PageReady:boolean = true
+  PageReady: boolean = true;
   closeResult = '';
-  
-  @ViewChild('clienteForm', {static: false}) clientForm: NgForm;
-  
+  LoadDataSignal = true
+
+  @ViewChild('clienteForm', { static: false }) clientForm: NgForm;
+
   cliente: Cliente = {
     nombre: '',
     apellido: '',
     correo: '',
-    saldo: 0 
-  }
+    saldo: 0,
+  };
 
   constructor(
     private clientesService: ClienteService,
-    private toast: NgToastService,
     private modalService: NgbModal,
-    private router: Router
-  ){}
+    private toasterService: ToasterService
+  ) {}
 
   ngOnInit() {
     this.clientesService.getClientes().subscribe(
@@ -42,23 +42,21 @@ export class ClientesComponent implements OnInit, AfterViewInit {
           this.clienteslength = clientesData.length;
           this.LoadingMessage = 'No se encontraron datos';
         }
-
-        if (this.clientes !== undefined) {
-          this.LoadDataOk();
-        } else {
-          this.LoadDataError();
+        
+        if(this.LoadDataSignal !== false){
+          if (this.clientes !== undefined) {
+            this.toasterService.ActiveToaster("success","Carga exitosa","Datos cargados con éxito.")
+          } else {
+            this.toasterService.ActiveToaster("error","Error","Error al cargar los datos")
+          }
         }
 
-        return this.PageReady = false
+        return this.PageReady = false;
       },
       (err) => {
         return console.log(err);
       }
     );
-  }
-
-  ngAfterViewInit(): void {
-    this.clientForm ? true : false
   }
 
   getClientesSize(): number {
@@ -75,66 +73,46 @@ export class ClientesComponent implements OnInit, AfterViewInit {
     return saldoTotal;
   }
 
-  AgregarCliente({value, valid}: {value: Cliente, valid: boolean | null}){
-    if(!valid){   
-      return this.toast.error({
-        detail: 'Error al agregar el cliente',
-        summary: `Llenar el formulario correctamente.`,
-      });
-    }else{
+  AgregarCliente({ value, valid }: { value: Cliente; valid: boolean | null }) {
+    if (!valid) {
+      this.toasterService.ActiveToaster("error","Error al agregar el cliente","Llenar el formulario correctamente.")
+    } else {
+      this.LoadDataSignal = false
       this.clientesService.agregarCliente(value);
       this.modalService.dismissAll(this.modalService);
 
       setTimeout(() => {
-        this.cliente.nombre = ''
-        this.cliente.apellido = ''
-        this.cliente.correo = ''
-        this.cliente.saldo = 0
+        this.cliente.nombre = '';
+        this.cliente.apellido = '';
+        this.cliente.correo = '';
+        this.cliente.saldo = 0;
       }, 1000);
+
+      return this.toasterService.ActiveToaster("success","Cliente agregado","El cliente fue agregado de manera éxitosa.")
     }
-  }
-
-
-  LoadDataOk() {
-    if(this.clientes.length === 1){
-      return this.toast.success({
-        detail: 'Mensaje de éxito',
-        summary: `${this.clienteslength} Cliente fue cargado.`,
-      });
-    }else{
-      return this.toast.success({
-        detail: 'Mensaje de éxito',
-        summary: `${this.clienteslength} Clientes fueron cargados.`,
-      });
-    }
-  }
-
-  LoadDataError() {
-    return this.toast.error({
-      detail: 'Hubo un problema :(',
-      summary: `Hubo un error al cargar los clientes.`,
-    });
   }
 
   //Modal Functions
   open(content: any) {
-		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
-			(result) => {
-				this.closeResult = `Closed with: ${result}`;
-			},
-			(reason) => {
-				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-			},
-		);
-	}
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
 
-	private getDismissReason(reason: any): string {
-		if (reason === ModalDismissReasons.ESC) {
-			return 'by pressing ESC';
-		} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-			return 'by clicking on a backdrop';
-		} else {
-			return `with: ${reason}`;
-		}
-	}
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 }

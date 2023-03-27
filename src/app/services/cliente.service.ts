@@ -64,6 +64,5 @@ export class ClienteService {
   deleteCliente(id: string){
     this.clienteDoc = this.database.doc(`Clientes/${id}`);
     this.clienteDoc.delete();
-    alert("DELETED")
   }
 }

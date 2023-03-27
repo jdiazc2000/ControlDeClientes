@@ -18,11 +18,10 @@ import { RegistroComponent } from './components/registro/registro.component';
 import { ConfiguracionComponent } from './components/configuracion/configuracion.component';
 import { NoEncontradoComponent } from './components/no-encontrado/no-encontrado.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { NgToastModule } from 'ng-angular-popup';
 import { NgbModule, NgbNav } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../environments/environment';
-import { ToastrModule } from 'ngx-toastr';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -42,13 +41,14 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    NgToastModule,
+    ToastrModule.forRoot({
+      preventDuplicates: true
+    }),
     NgbModule,
     FormsModule,
     FirestoreModule,
     AngularFirestoreModule,
     AuthModule,
-    ToastrModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
