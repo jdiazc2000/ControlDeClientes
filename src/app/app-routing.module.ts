@@ -29,6 +29,10 @@ const routes: Routes = [
     path:'**',
     component:TableComponent
   },
+  {
+    path:'',
+    component:TableComponent
+  },
 ];
 
 @NgModule({
