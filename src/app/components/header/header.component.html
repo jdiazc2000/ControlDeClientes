@@ -11,11 +11,20 @@
     </ul>
       <ul class="navbar-nav mr-auto">
         <li class="nav-item dropdown" ngbDropdown>
-          <a class="nav-link dropdown-toggle" id="id01" ngbDropdownToggle>Bienvenido</a>
+          <a class="nav-link dropdown-toggle" id="id01" ngbDropdownToggle>Bienvenido {{loggedInUser}}</a>
           <div class="dropdown-menu" aria-labelledby="id01" ngbDropdownMenu>
-            <a class="dropdown-item" href="#"><i class="fa-solid fa-gear" style="color: #1e2529;"></i> Configuración</a>
-            <a class="dropdown-item" href="#"  routerLink="/login"><i class="fa-solid fa-right-from-bracket" style="color: #1e2529;"></i> Cerrar sesión</a>
+            <a class="dropdown-item"><i class="fa-solid fa-gear" style="color: #6f6f6f; pointer-events: none;"></i> Configuración</a>
           </div>
+        </li>
+      </ul>
+      <ul class="navbar-nav mr-auto" *ngIf="!this.isLoggedIn">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" routerLink="/login">Login</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav mr-auto" *ngIf="this.isLoggedIn">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" routerLink="/login" (click)="LogOut()"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</a>
         </li>
       </ul>
     </div>

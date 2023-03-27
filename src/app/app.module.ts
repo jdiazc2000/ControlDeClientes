@@ -22,6 +22,8 @@ import { NgbModule, NgbNav } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../environments/environment';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { ToastrModule } from 'ngx-toastr';
+import { LoginService } from './services/login.service';
+import { AuthGuardian } from './guadians/auth.guard';
 
 
 @NgModule({
@@ -53,7 +55,7 @@ import { ToastrModule } from 'ngx-toastr';
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
   ],
-  providers: [NgbNav, { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig }],
+  providers: [NgbNav, { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig }, LoginService, AuthGuardian],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

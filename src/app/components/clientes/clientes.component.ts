@@ -4,12 +4,15 @@ import { ClienteService } from 'src/app/services/cliente.service';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 import { ToasterService } from 'src/app/services/toaster.service';
+import { Subscription } from 'rxjs';
+import { UnsubscriberService } from '@lucaspaganini/angular-utils';
 
 
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.component.html',
   styleUrls: ['./clientes.component.scss'],
+  providers:[UnsubscriberService]
 })
 export class ClientesComponent implements OnInit {
   clientes!: Cliente[];
@@ -18,6 +21,8 @@ export class ClientesComponent implements OnInit {
   PageReady: boolean = true;
   closeResult = '';
   LoadDataSignal = true
+
+  private subscriptions: Subscription
 
   @ViewChild('clienteForm', { static: false }) clientForm: NgForm;
 
@@ -31,11 +36,14 @@ export class ClientesComponent implements OnInit {
   constructor(
     private clientesService: ClienteService,
     private modalService: NgbModal,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private readonly _unsubscriber: UnsubscriberService
   ) {}
 
   ngOnInit() {
-    this.clientesService.getClientes().subscribe(
+    this.clientesService.getClientes()
+    .pipe(this._unsubscriber.takeUntilDestroy)
+    .subscribe(
       (clientesData) => {
         if (clientesData !== undefined) {
           this.clientes = clientesData;
@@ -56,7 +64,7 @@ export class ClientesComponent implements OnInit {
       (err) => {
         return console.log(err);
       }
-    );
+    )
   }
 
   getClientesSize(): number {
