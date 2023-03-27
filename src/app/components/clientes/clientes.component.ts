@@ -4,16 +4,15 @@ import { ClienteService } from 'src/app/services/cliente.service';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 import { ToasterService } from 'src/app/services/toaster.service';
-import { Subscription } from 'rxjs';
-import { UnsubscriberService } from '@lucaspaganini/angular-utils';
+import { UntilDestroy,untilDestroyed } from '@ngneat/until-destroy';
 
-
+@UntilDestroy()
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.component.html',
   styleUrls: ['./clientes.component.scss'],
-  providers:[UnsubscriberService]
 })
+
 export class ClientesComponent implements OnInit {
   clientes!: Cliente[];
   clienteslength: number = 0;
@@ -22,7 +21,6 @@ export class ClientesComponent implements OnInit {
   closeResult = '';
   LoadDataSignal = true
 
-  private subscriptions: Subscription
 
   @ViewChild('clienteForm', { static: false }) clientForm: NgForm;
 
@@ -36,15 +34,13 @@ export class ClientesComponent implements OnInit {
   constructor(
     private clientesService: ClienteService,
     private modalService: NgbModal,
-    private toasterService: ToasterService,
-    private readonly _unsubscriber: UnsubscriberService
+    private toasterService: ToasterService
   ) {}
 
   ngOnInit() {
-    this.clientesService.getClientes()
-    .pipe(this._unsubscriber.takeUntilDestroy)
-    .subscribe(
+    this.clientesService.getClientes().pipe(untilDestroyed(this)).subscribe(
       (clientesData) => {
+        console.log("escuchando...")
         if (clientesData !== undefined) {
           this.clientes = clientesData;
           this.clienteslength = clientesData.length;
