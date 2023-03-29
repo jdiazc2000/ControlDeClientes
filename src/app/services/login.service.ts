@@ -33,4 +33,13 @@ constructor(private authService: AngularFireAuth,
     this.authService.signOut()
   }
 
+  Register(correo:string, contrasena:string){
+    return new Promise((resolve,reject) => {
+      this.authService.createUserWithEmailAndPassword(correo,contrasena).then(
+        datos => resolve(datos), 
+        error => reject(error)
+      )
+    })
+  }
+
 }

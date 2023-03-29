@@ -16,11 +16,12 @@ export class LoginComponent {
               private toaster: ToasterService,
               private loginService: LoginService){}
 
-  submitData(){
+  submitData(correo: string, contrasena: string){
     this.loginService.login(this.correo,this.contrasena).then(res => {
       this.router.navigate(['/table']);
     })
     .catch(error => {
+      console.log(error)
       this.toaster.ActiveToaster("error","Credenciales incorrectas","Por favor ingresar credenciales correctas.")
     })
   }

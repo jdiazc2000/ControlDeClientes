@@ -4,7 +4,7 @@
         <img src="../../../assets/user.svg" alt="">
     </div>
     
-    <p style="color: white;">Eliminar los % de las credenciales para ingresar.</p>
+    <p>Eliminar los % de las credenciales para ingresar.</p>
 
     <div class="input">
         <input type="text" placeholder="Correo" id="inputname" name="correo" [(ngModel)]="correo"/>
@@ -13,7 +13,10 @@
         <input type="text" placeholder="Contraseña" id="inputpassword" name="contrasena" [(ngModel)]="contrasena"/>
     </div>
     <div class="btncontainer">
-        <button (click)="submitData()">Iniciar sesión</button>
+        <button (click)="submitData(correo,contrasena)">Iniciar sesión</button>
+    </div>
+    <div class="RegisterLink">
+    <a routerLink="/register">Registrarse</a>
     </div>
   </form>
 </div>

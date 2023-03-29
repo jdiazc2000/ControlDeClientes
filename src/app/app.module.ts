@@ -44,7 +44,9 @@ import { AuthGuardian } from './guadians/auth.guard';
     AppRoutingModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot({
-      preventDuplicates: true
+      preventDuplicates: true,
+      positionClass: 'toast-top-right',
+      easing: "ease-in-out"
     }),
     NgbModule,
     FormsModule,

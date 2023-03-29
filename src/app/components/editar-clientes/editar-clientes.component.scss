@@ -80,3 +80,17 @@ top: 35%;
     opacity: 0;
   }
 }
+
+
+@media (max-width:555px){
+  #footerbuttons{
+    display: grid;
+    place-items: center;
+
+    .ActionsButton{
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+  
+}

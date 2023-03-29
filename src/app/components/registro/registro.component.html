@@ -1,1 +1,21 @@
-<p>registro works!</p>
+<div id="mainDiv">
+    <form class="form">
+      <div class="logocontainer">
+          <img src="../../../assets/Address_card.svg" alt="">
+      </div>
+  
+      <div class="input">
+          <input type="text" placeholder="Correo" id="inputname" name="correo" [(ngModel)]="correo"/>
+      </div>
+      <div class="input">
+          <input type="text" placeholder="Contraseña" id="inputpassword" name="contrasena" [(ngModel)]="contrasena"/>
+      </div>
+      <div class="btncontainer">
+          <button (click)="RegistrarUser(correo,contrasena)">Registrarse</button>
+      </div>
+      <div class="LoginLink">
+        <a routerLink="/login">Inicio de sesión</a>
+    </div>
+    </form>
+  </div>
+  
