@@ -1,0 +1,32 @@
+td{
+    vertical-align: middle;
+}
+
+.container{
+  text-align: center;
+}
+
+.col-md-6{
+  width: 100vw;
+
+  h1{
+      font-size: 2rem;
+      text-transform: capitalize;
+      font-weight: 100;
+  }
+}
+
+.buttonsrow{
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+
+@media (max-height: 485px){
+    #main-header{
+        height: 0%;
+        min-height: 5.5rem;
+    }
+}
+

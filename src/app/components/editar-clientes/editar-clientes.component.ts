@@ -1,10 +1,12 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Cliente } from 'src/app/models/Cliente';
+import { Cliente } from 'src/app/models/Cliente.model';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { ToasterService } from 'src/app/services/toaster.service';
-import { ModalDismissReasons, NgbModal, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UntilDestroy,untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-editar-clientes',
   templateUrl: './editar-clientes.component.html',
@@ -30,7 +32,7 @@ export class EditarClientesComponent implements OnInit{
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id']
-    this.clienteService.getCliente(this.id).subscribe(cliente => {
+    this.clienteService.getCliente(this.id).pipe(untilDestroyed(this)).subscribe(cliente => {
       if(cliente !== null){
         this.cliente = cliente
         this.PageReady = false
@@ -42,7 +44,7 @@ export class EditarClientesComponent implements OnInit{
   }
 
   VolverHome(){
-    this.router.navigate(["table"])
+    this.router.navigate(["clientes"])
   }
 
   EditarCliente({value, valid}: {value: Cliente, valid: boolean | null}){
@@ -52,7 +54,7 @@ export class EditarClientesComponent implements OnInit{
       value.id = this.id
       this.clienteService.modificarCliente(value)
       this.toasterService.ActiveToaster("success","Cliente editado de manera correcta",`El cliente ${value.nombre} fue editado con éxito.`)
-      return this.router.navigate(["table"])
+      return this.router.navigate(["clientes"])
     }
   }
 
@@ -60,7 +62,7 @@ export class EditarClientesComponent implements OnInit{
     let dataId = this.route.snapshot.params['id']
     this.clienteService.deleteCliente(dataId)
     this.toasterService.ActiveToaster("success","Cliente eliminado de manera correcta",`El cliente fue eliminado con éxito.`)
-    return this.router.navigate(["table"])
+    return this.router.navigate(["clientes"])
   }
 
 

@@ -16,14 +16,14 @@ import { EditarClientesComponent } from './components/editar-clientes/editar-cli
 import { LoginComponent } from './components/login/login.component';
 import { RegistroComponent } from './components/registro/registro.component';
 import { ConfiguracionComponent } from './components/configuracion/configuracion.component';
-import { NoEncontradoComponent } from './components/no-encontrado/no-encontrado.component';
-import { FooterComponent } from './components/footer/footer.component';
 import { NgbModule, NgbNav } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../environments/environment';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { ToastrModule } from 'ngx-toastr';
 import { LoginService } from './services/login.service';
 import { AuthGuardian } from './guadians/auth.guard';
+import { ConfiguracionService } from './services/configuracion.service';
+import { RegisterGuardian } from './guadians/register.guard';
 
 
 @NgModule({
@@ -35,9 +35,7 @@ import { AuthGuardian } from './guadians/auth.guard';
     EditarClientesComponent,
     LoginComponent,
     RegistroComponent,
-    ConfiguracionComponent,
-    NoEncontradoComponent,
-    FooterComponent
+    ConfiguracionComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +44,8 @@ import { AuthGuardian } from './guadians/auth.guard';
     ToastrModule.forRoot({
       preventDuplicates: true,
       positionClass: 'toast-top-right',
-      easing: "ease-in-out"
+      easing: "ease-in-out",
+      newestOnTop: false
     }),
     NgbModule,
     FormsModule,
@@ -57,7 +56,14 @@ import { AuthGuardian } from './guadians/auth.guard';
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
   ],
-  providers: [NgbNav, { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig }, LoginService, AuthGuardian],
+  providers: [
+    NgbNav, 
+    { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig }, 
+    LoginService, 
+    AuthGuardian,
+    ConfiguracionService,
+    RegisterGuardian
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

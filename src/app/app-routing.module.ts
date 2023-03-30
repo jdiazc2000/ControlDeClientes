@@ -5,15 +5,29 @@ import { ConfiguracionComponent } from './components/configuracion/configuracion
 import { EditarClientesComponent } from './components/editar-clientes/editar-clientes.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegistroComponent } from './components/registro/registro.component';
-//import { NoEncontradoComponent } from './components/no-encontrado/no-encontrado.component';
-//import { RegistroComponent } from './components/registro/registro.component';
 import { TableComponent } from './components/table/table.component';
 import { AuthGuardian } from './guadians/auth.guard';
+import { RegisterGuardian } from './guadians/register.guard';
 
 const routes: Routes = [
   {
     path:'table',
     component:TableComponent,
+    canActivate: [AuthGuardian],
+  },
+  {
+    path:'clientes/editar/:id',
+    component:EditarClientesComponent,
+    canActivate: [AuthGuardian]
+  },
+  {
+    path:'configuracion',
+    component:ConfiguracionComponent,
+    canActivate: [AuthGuardian]
+  },
+  {
+    path:"clientes",
+    component: ClientesComponent,
     canActivate: [AuthGuardian]
   },
   {
@@ -22,16 +36,8 @@ const routes: Routes = [
   },
   {
     path:"register",
-    component:RegistroComponent
-  },
-  {
-    path:'configuracion',
-    component:ConfiguracionComponent
-  },
-  {
-    path:'cliente/editar/:id',
-    component:EditarClientesComponent,
-    canActivate: [AuthGuardian]
+    component:RegistroComponent,
+    canActivate:[RegisterGuardian]
   },
   {
     path:'**',

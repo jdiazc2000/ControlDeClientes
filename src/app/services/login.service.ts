@@ -9,9 +9,9 @@ import {map} from "rxjs/operators"
 export class LoginService {
 
   token: string | null;
+  NewLogin: boolean = true
 
-constructor(private authService: AngularFireAuth,
-            private router: Router) { }
+constructor(private authService: AngularFireAuth) { }
 
   login(correo:string, contrasena: string){
     return new Promise((resolve,reject) => {
@@ -30,6 +30,7 @@ constructor(private authService: AngularFireAuth,
   }
 
   LogOut() {
+    this.NewLogin = true
     this.authService.signOut()
   }
 

@@ -16,7 +16,7 @@
         <button (click)="submitData(correo,contrasena)">Iniciar sesión</button>
     </div>
     <div class="RegisterLink">
-    <a routerLink="/register">Registrarse</a>
+    <a routerLink="/register" *ngIf="PermitirRegistro">Registrarse</a>
     </div>
   </form>
 </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Cliente } from 'src/app/models/Cliente';
+import { Cliente } from 'src/app/models/Cliente.model';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';

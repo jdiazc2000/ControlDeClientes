@@ -1,3 +1,5 @@
+<!-- Header -->
+<app-header></app-header>
 
 <!-- Pantalla de carga -->
 <div class="page-loader" *ngIf="PageReady">
@@ -73,7 +75,7 @@
                                     <td>{{cliente.nombre}}</td>
                                     <td>{{cliente.saldo | currency: 'SOL': 'S/'}}</td>
                                     <td>
-                                        <a routerLink="/cliente/editar/{{cliente.id}}" class="btn btn-primary">
+                                        <a routerLink="editar/{{cliente.id}}" class="btn btn-primary">
                                             <i class="fa-solid fa-pen-to-square"></i> Editar
                                         </a>
                                     </td>

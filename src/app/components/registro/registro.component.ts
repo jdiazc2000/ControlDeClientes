@@ -13,14 +13,13 @@ export class RegistroComponent {
   correo: string 
   contrasena: string 
 
-
   constructor(private router: Router,
     private toaster: ToasterService,
     private loginService: LoginService){}
 
   RegistrarUser(correo:string,contrasena:string){
-    this.loginService.Register(this.correo,this.contrasena).then(res => {
-      this.router.navigate(['/table']);
+    this.loginService.Register(correo,contrasena).then(res => {
+      this.router.navigate(['/clientes']);
       this.toaster.ActiveToaster("success","Registro éxitoso", "Usuario registrado de manera éxitosa.")
     })
     .catch(error => {
